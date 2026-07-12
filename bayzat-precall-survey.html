@@ -1,0 +1,617 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Bayzat — Before we talk | قبل ما نتكلم</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Rubik:wght@400;500;700;900&display=swap" rel="stylesheet">
+<style>
+:root{
+  --purple:#9647FF;
+  --dark-purple:#4A378B;
+  --charcoal:#242424;
+  --stone:#E8E8E8;
+  --gray3:#727272;
+  --gray1:#C8C8C8;
+  --cherry:#CD2873;
+  --white:#FFFFFF;
+}
+*{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+html,body{height:100%}
+body{
+  font-family:'Rubik',Arial,sans-serif;
+  background:var(--white);
+  color:#000;
+  overflow:hidden;
+}
+/* ---------- decorative brand shapes ---------- */
+.bg-shapes{position:fixed;inset:0;pointer-events:none;z-index:0;overflow:hidden}
+.bg-shapes svg{position:absolute;opacity:.9}
+/* ---------- header ---------- */
+header{
+  position:fixed;top:0;left:0;right:0;z-index:20;
+  display:flex;align-items:center;justify-content:space-between;
+  padding:18px 24px;
+}
+.logo{font-weight:900;font-size:26px;color:var(--purple);letter-spacing:-.5px;user-select:none}
+.lang-toggle{
+  display:flex;border:2px solid var(--charcoal);overflow:hidden;cursor:pointer;
+  clip-path:polygon(8px 0,100% 0,100% calc(100% - 8px),calc(100% - 8px) 100%,0 100%,0 8px);
+  background:var(--white);
+}
+.lang-toggle button{
+  border:none;background:transparent;padding:8px 16px;font-family:inherit;
+  font-size:14px;font-weight:700;cursor:pointer;color:#000;transition:.2s;
+}
+.lang-toggle button.active{background:var(--purple);color:var(--white)}
+/* ---------- progress ---------- */
+.progress-wrap{position:fixed;top:0;left:0;right:0;height:5px;background:var(--stone);z-index:30}
+.progress-bar{height:100%;background:var(--purple);width:0%;transition:width .4s cubic-bezier(.4,0,.2,1)}
+[dir="rtl"] .progress-bar{margin-left:auto}
+.step-count{
+  position:fixed;top:70px;z-index:20;font-size:13px;font-weight:500;color:var(--gray3);
+  left:50%;transform:translateX(-50%);
+}
+/* ---------- stage ---------- */
+.stage{
+  position:relative;z-index:10;height:100%;
+  display:flex;align-items:center;justify-content:center;
+  padding:90px 24px 110px;
+}
+.card{width:100%;max-width:620px}
+.slide{animation:slideIn .38s cubic-bezier(.25,.8,.35,1) both}
+.slide.out{animation:slideOut .25s ease both}
+@keyframes slideIn{from{opacity:0;transform:translateY(26px)}to{opacity:1;transform:translateY(0)}}
+@keyframes slideOut{from{opacity:1;transform:translateY(0)}to{opacity:0;transform:translateY(-22px)}}
+/* ---------- typography ---------- */
+h1{
+  font-weight:900;font-size:clamp(28px,5vw,44px);line-height:1.05;
+  text-transform:uppercase;color:#000;margin-bottom:14px;
+}
+[dir="rtl"] h1{text-transform:none;line-height:1.25;font-size:clamp(26px,4.6vw,40px)}
+h1 .accent{color:var(--purple)}
+h2{
+  font-weight:700;font-size:clamp(22px,3.6vw,30px);line-height:1.2;margin-bottom:8px;color:#000;
+}
+[dir="rtl"] h2{line-height:1.4}
+.sub{font-size:16px;line-height:1.5;color:var(--gray3);margin-bottom:26px}
+/* ---------- inputs ---------- */
+.field{margin-bottom:16px}
+.field label{display:block;font-size:13px;font-weight:700;margin-bottom:6px;color:#000}
+input[type=text],input[type=email],input[type=tel]{
+  width:100%;padding:15px 16px;font-family:inherit;font-size:17px;
+  border:2px solid var(--gray1);background:var(--white);outline:none;transition:border-color .2s;
+  clip-path:polygon(10px 0,100% 0,100% calc(100% - 10px),calc(100% - 10px) 100%,0 100%,0 10px);
+}
+input:focus{border-color:var(--purple)}
+input.err{border-color:var(--cherry)}
+.err-msg{font-size:13px;color:var(--cherry);margin-top:6px;display:none}
+.err-msg.show{display:block}
+/* ---------- option chips ---------- */
+.opts{display:flex;flex-wrap:wrap;gap:10px}
+.opt{
+  border:2px solid var(--gray1);background:var(--white);cursor:pointer;
+  padding:13px 18px;font-family:inherit;font-size:15.5px;font-weight:500;color:#000;
+  transition:border-color .15s, background .15s, color .15s, transform .1s;
+  clip-path:polygon(10px 0,100% 0,100% calc(100% - 10px),calc(100% - 10px) 100%,0 100%,0 10px);
+  text-align:start;
+}
+.opt:hover{border-color:var(--purple)}
+.opt:active{transform:scale(.97)}
+.opt.selected{background:var(--purple);border-color:var(--purple);color:var(--white)}
+.opts.stacked{flex-direction:column}
+.opts.stacked .opt{width:100%;padding:15px 18px}
+.opt .tick{display:inline-block;width:1.2em;font-weight:900;opacity:0;transition:opacity .15s}
+.opt.selected .tick{opacity:1}
+/* ---------- buttons ---------- */
+.actions{display:flex;align-items:center;gap:14px;margin-top:28px}
+.btn{
+  border:none;cursor:pointer;font-family:inherit;font-weight:900;text-transform:uppercase;
+  font-size:16px;letter-spacing:.4px;padding:16px 34px;transition:transform .12s, background .2s;
+  clip-path:polygon(12px 0,100% 0,100% calc(100% - 12px),calc(100% - 12px) 100%,0 100%,0 12px);
+}
+[dir="rtl"] .btn{text-transform:none;letter-spacing:0}
+.btn-primary{background:var(--purple);color:var(--white)}
+.btn-primary:hover{background:#8438ef}
+.btn-primary:active{transform:scale(.97)}
+.btn-ghost{
+  background:transparent;color:var(--gray3);font-weight:500;text-transform:none;
+  padding:10px 6px;font-size:14px;clip-path:none;letter-spacing:0;
+}
+.btn-ghost:hover{color:#000}
+.hint{font-size:12.5px;color:var(--gray1);margin-top:14px}
+.hint b{color:var(--gray3);font-weight:500}
+/* ---------- back arrow ---------- */
+.back-fab{
+  position:fixed;bottom:26px;z-index:20;border:2px solid var(--charcoal);
+  background:var(--white);width:46px;height:46px;cursor:pointer;font-size:19px;line-height:1;
+  clip-path:polygon(8px 0,100% 0,100% calc(100% - 8px),calc(100% - 8px) 100%,0 100%,0 8px);
+  display:none;align-items:center;justify-content:center;color:#000;
+}
+.back-fab:hover{background:var(--stone)}
+[dir="ltr"] .back-fab{left:24px}
+[dir="rtl"] .back-fab{right:24px}
+.back-fab.show{display:flex}
+/* ---------- welcome / thanks ---------- */
+.time-pill{
+  display:inline-flex;align-items:center;gap:8px;margin-bottom:22px;
+  background:var(--stone);padding:8px 16px;font-size:13.5px;font-weight:700;color:#000;
+  clip-path:polygon(9px 0,100% 0,100% calc(100% - 9px),calc(100% - 9px) 100%,0 100%,0 9px);
+}
+.time-pill .dot{width:9px;height:9px;background:var(--purple);border-radius:0;
+  clip-path:polygon(30% 0,100% 0,100% 70%,70% 100%,0 100%,0 30%)}
+.thanks-check{
+  width:86px;height:86px;background:var(--purple);margin-bottom:26px;
+  display:flex;align-items:center;justify-content:center;
+  clip-path:polygon(20px 0,100% 0,100% calc(100% - 20px),calc(100% - 20px) 100%,0 100%,0 20px);
+}
+.thanks-check svg{width:44px;height:44px}
+@media (max-width:520px){
+  .stage{padding:80px 18px 100px}
+  .btn{width:100%}
+  .actions{flex-direction:column;align-items:stretch}
+}
+</style>
+</head>
+<body>
+
+<div class="progress-wrap"><div class="progress-bar" id="bar"></div></div>
+
+<div class="bg-shapes" aria-hidden="true">
+  <!-- Empowerment stairs, outline, cropped bottom-left -->
+  <svg style="bottom:-40px;left:-60px;width:300px" viewBox="0 0 200 200" fill="none">
+    <path d="M0 200 L0 140 L60 140 L60 80 L120 80 L120 20 L200 20" stroke="#9647FF" stroke-width="2.5"/>
+  </svg>
+  <!-- Happiness smile, outline, top-right, angled -->
+  <svg style="top:-30px;right:-50px;width:260px;transform:rotate(18deg)" viewBox="0 0 200 120" fill="none">
+    <path d="M10 10 C 40 110, 160 110, 190 10" stroke="#E8E8E8" stroke-width="14" stroke-linecap="square"/>
+  </svg>
+  <!-- Dynamic arrow, solid stone, mid-left -->
+  <svg style="top:34%;left:-90px;width:220px;transform:rotate(-12deg)" viewBox="0 0 200 100" fill="none">
+    <path d="M0 20 L120 20 L120 0 L200 50 L120 100 L120 80 L0 80 Z" fill="#E8E8E8"/>
+  </svg>
+</div>
+
+<header>
+  <div class="logo">bayzat</div>
+  <div class="lang-toggle" role="group" aria-label="Language">
+    <button id="btn-en" class="active" onclick="setLang('en')">EN</button>
+    <button id="btn-ar" onclick="setLang('ar')">عربي</button>
+  </div>
+</header>
+
+<div class="step-count" id="stepCount"></div>
+
+<main class="stage"><div class="card" id="card"></div></main>
+
+<button class="back-fab" id="backBtn" aria-label="Back" onclick="goBack()">←</button>
+
+<script>
+/* ================================================================
+   GOOGLE FORMS CONFIG  — fill this in once your Google Form exists.
+   1. Create the Google Form using the companion setup guide.
+   2. Get your form's "formResponse" URL and entry IDs (guide shows how).
+   3. Paste them below. Until then, submissions show the thank-you
+      screen and are logged to the browser console.
+   NOTE: answers are submitted as the ENGLISH canonical values below,
+   so your Google Form options must match them exactly.
+================================================================ */
+const GOOGLE_FORM = {
+  action: "", // e.g. "https://docs.google.com/forms/d/e/XXXXXXXX/formResponse"
+  entries: {
+    company:       "", // e.g. "entry.1234567890"
+    industry:      "",
+    role:          "",
+    designation:   "",
+    email:         "",
+    phone:         "",
+    currentSystem: "",
+    modules:       "",
+    biometric:     "",
+    timeline:      "",
+    assessing:     "",
+    usedBefore:    "",
+    hiring:        "",
+    performance:   "",
+    ai:            "",
+    language:      ""
+  }
+};
+
+/* ============================ i18n ============================ */
+const T = {
+  en: {
+    stepOf: (a,b)=>`Question ${a} of ${b}`,
+    next:"Next", start:"Let's go", submit:"Send it",
+    enterHint:"press <b>Enter ↵</b>",
+    pickMany:"Pick as many as you like",
+    required:"This one we really need",
+    badEmail:"That email doesn't look right",
+    badPhone:"That number doesn't look right",
+    welcome:{
+      pill:"Under 2 minutes — promise",
+      h:'BEFORE WE TALK, <span class="accent">HELP US SKIP THE SMALL TALK</span>',
+      sub:"A few quick taps so our call starts exactly where it matters — your business. No essays, mostly one-tap answers."
+    },
+    thanks:{
+      h:"DONE. THAT WAS <span class='accent'>EASY</span>",
+      sub:"Thanks — we'll come to the call prepared, so you don't repeat a word of this. Talk soon."
+    },
+    q:{
+      company:{h:"What's your company called?", ph:"Company name"},
+      industry:{h:"Which industry are you in?"},
+      role:{h:"And you are the…", sub:"So we bring the right person along.", ph:"Your job title (e.g. HR Manager)"},
+      contact:{h:"Where can we reach you?", email:"Work email", phone:"Mobile number", phPh:"05X XXX XXXX"},
+      currentSystem:{h:"Is there an HRMS or ATS in place today?"},
+      modules:{h:"What would you like to explore?", sub:"Pick everything that interests you."},
+      biometric:{h:"Quick one — any biometric attendance devices on site?", sub:"You picked Attendance, so this helps us prep."},
+      timeline:{h:"Where are you in the search?"},
+      assessing:{h:"Which platforms are you looking at?", sub:"It's fine — we like the competition."},
+      usedBefore:{h:"Used a cloud HRMS/ATS before?", sub:"Select any you've worked with."},
+      hiring:{h:"Growing the team? How many hires in the next 12 months?"},
+      performance:{h:"Do you run performance reviews today?"},
+      ai:{h:"Last one — where do you stand on AI at work?"}
+    }
+  },
+  ar: {
+    stepOf:(a,b)=>`سؤال ${a} من ${b}`,
+    next:"التالي", start:"يلا نبدأ", submit:"أرسل",
+    enterHint:"اضغط <b>Enter ↵</b>",
+    pickMany:"اختر كل اللي يناسبك",
+    required:"هذا السؤال نحتاجه ضروري",
+    badEmail:"الإيميل ما يبدو صحيح",
+    badPhone:"الرقم ما يبدو صحيح",
+    welcome:{
+      pill:"أقل من دقيقتين — وعد",
+      h:'قبل المكالمة، <span class="accent">خلّنا ندخل في الموضوع مباشرة</span>',
+      sub:"كم سؤال سريع عشان تبدأ مكالمتنا من النقطة اللي تهمّك — منشأتك. أغلب الإجابات ضغطة وحدة بس."
+    },
+    thanks:{
+      h:"خلصنا! <span class='accent'>أسهل مما توقعت، صح؟</span>",
+      sub:"شكرًا لك — بنجي للمكالمة جاهزين، وما راح تعيد أي كلمة قلتها هنا. نشوفك قريب."
+    },
+    q:{
+      company:{h:"وش اسم منشأتك؟", ph:"اسم المنشأة"},
+      industry:{h:"في أي قطاع تشتغلون؟"},
+      role:{h:"وأنت دورك…", sub:"عشان نجهّز الشخص المناسب للمكالمة.", ph:"المسمى الوظيفي (مثال: مدير موارد بشرية)"},
+      contact:{h:"كيف نتواصل معك؟", email:"ايميل العمل", phone:"رقم الجوال", phPh:"05X XXX XXXX"},
+      currentSystem:{h:"عندكم حاليًا نظام HR أو نظام توظيف؟"},
+      modules:{h:"وش الأنظمة اللي تبي تطّلع عليها؟", sub:"اختر كل اللي يهمّك."},
+      biometric:{h:"سؤال سريع — عندكم أجهزة بصمة للحضور؟", sub:"اخترت الحضور والانصراف، فهذا يساعدنا نجهّز لك."},
+      timeline:{h:"وين وصلتوا في البحث؟"},
+      assessing:{h:"وش المنصات اللي تقيّمونها حاليًا؟", sub:"عادي جدًا — المنافسة تحمّسنا."},
+      usedBefore:{h:"سبق استخدمتوا نظام HR أو توظيف سحابي؟", sub:"اختر أي نظام جرّبتوه من قبل."},
+      hiring:{h:"عندكم خطط توسّع؟ كم موظف ناوين توظفون خلال ١٢ شهر؟"},
+      performance:{h:"تسوون تقييم أداء لموظفينكم حاليًا؟"},
+      ai:{h:"آخر سؤال — وش وضعكم مع الذكاء الاصطناعي؟"}
+    }
+  }
+};
+
+/* ==================== options (canonical EN value + labels) ==================== */
+const OPTS = {
+  industry:[
+    {v:"Retail",en:"Retail",ar:"التجزئة"},
+    {v:"F&B & Hospitality",en:"F&B & Hospitality",ar:"المطاعم والضيافة"},
+    {v:"Healthcare",en:"Healthcare",ar:"الرعاية الصحية"},
+    {v:"Construction & Contracting",en:"Construction & Contracting",ar:"البناء والمقاولات"},
+    {v:"Logistics & Transport",en:"Logistics & Transport",ar:"اللوجستيات والنقل"},
+    {v:"Technology",en:"Technology",ar:"التقنية"},
+    {v:"Professional Services",en:"Professional Services",ar:"الخدمات المهنية"},
+    {v:"Manufacturing",en:"Manufacturing",ar:"التصنيع"},
+    {v:"Education",en:"Education",ar:"التعليم"},
+    {v:"Other",en:"Other",ar:"قطاع آخر"}
+  ],
+  role:[
+    {v:"Owner / C-level",en:"Owner / C-level",ar:"مالك / إدارة تنفيذية"},
+    {v:"HR",en:"HR",ar:"الموارد البشرية"},
+    {v:"Finance",en:"Finance",ar:"المالية"},
+    {v:"IT",en:"IT",ar:"تقنية المعلومات"},
+    {v:"Operations",en:"Operations",ar:"العمليات"},
+    {v:"Other",en:"Other",ar:"غير ذلك"}
+  ],
+  currentSystem:[
+    {v:"Yes - cloud system",en:"Yes — a cloud system",ar:"نعم — نظام سحابي"},
+    {v:"Yes - on-premise / legacy",en:"Yes — on-premise or legacy",ar:"نعم — نظام محلي أو قديم"},
+    {v:"No - spreadsheets & manual",en:"No — spreadsheets & manual work",ar:"لا — جداول إكسل وشغل يدوي"}
+  ],
+  modules:[
+    {v:"Payroll",en:"Payroll",ar:"الرواتب"},
+    {v:"Attendance & Shifts",en:"Attendance & Shifts",ar:"الحضور والمناوبات"},
+    {v:"Leave Management",en:"Leave Management",ar:"الإجازات"},
+    {v:"Employee Records",en:"Employee Records",ar:"سجلات الموظفين"},
+    {v:"Hiring (ATS)",en:"Hiring (ATS)",ar:"التوظيف (ATS)"},
+    {v:"Onboarding",en:"Onboarding",ar:"تهيئة الموظفين"},
+    {v:"Performance",en:"Performance",ar:"تقييم الأداء"},
+    {v:"Health Insurance",en:"Health Insurance",ar:"التأمين الصحي"},
+    {v:"Workflows & Automation",en:"Workflows & Automation",ar:"الأتمتة وسير العمل"}
+  ],
+  biometric:[
+    {v:"Yes",en:"Yes, devices in place",ar:"نعم، عندنا أجهزة"},
+    {v:"No",en:"No devices",ar:"لا، ما عندنا"},
+    {v:"Planning to",en:"Planning to get them",ar:"نخطط نركّبها"}
+  ],
+  timeline:[
+    {v:"Actively looking - urgent",en:"Actively looking — we need it soon",ar:"نبحث بجدية — نحتاجه بأسرع وقت"},
+    {v:"Actively looking - no rush",en:"Actively looking — no rush",ar:"نبحث بجدية — بدون استعجال"},
+    {v:"Just exploring",en:"Just exploring for now",ar:"نستكشف الخيارات حاليًا"}
+  ],
+  platforms:[
+    {v:"Jisr",en:"Jisr",ar:"جسر"},
+    {v:"palm.hr",en:"palm.hr",ar:"palm.hr"},
+    {v:"ZenHR",en:"ZenHR",ar:"ZenHR"},
+    {v:"Darwinbox",en:"Darwinbox",ar:"Darwinbox"},
+    {v:"SAP SuccessFactors",en:"SAP SuccessFactors",ar:"SAP SuccessFactors"},
+    {v:"Oracle HCM",en:"Oracle HCM",ar:"Oracle HCM"},
+    {v:"Odoo",en:"Odoo",ar:"Odoo"},
+    {v:"Elevatus",en:"Elevatus",ar:"Elevatus"},
+    {v:"Other",en:"Other",ar:"منصة أخرى"}
+  ],
+  hiring:[
+    {v:"Not hiring right now",en:"Not hiring right now",ar:"ما نوظف حاليًا"},
+    {v:"1-10",en:"1–10 hires",ar:"١–١٠ موظفين"},
+    {v:"11-50",en:"11–50 hires",ar:"١١–٥٠ موظف"},
+    {v:"51-200",en:"51–200 hires",ar:"٥١–٢٠٠ موظف"},
+    {v:"200+",en:"200+ hires",ar:"أكثر من ٢٠٠ موظف"}
+  ],
+  performance:[
+    {v:"Yes, regularly",en:"Yes, regularly",ar:"نعم، بشكل دوري"},
+    {v:"Sometimes, informally",en:"Sometimes, informally",ar:"أحيانًا، بشكل غير رسمي"},
+    {v:"Not yet",en:"Not yet",ar:"للحين لا"}
+  ],
+  ai:[
+    {v:"Already using AI",en:"Already using it",ar:"نستخدمه فعليًا"},
+    {v:"Interested, not started",en:"Interested, haven't started",ar:"مهتمين وما بدينا"},
+    {v:"Not a priority",en:"Not a priority right now",ar:"مو أولوية حاليًا"}
+  ]
+};
+// "None" style exclusive options
+const NONE_ASSESSING = {v:"Only Bayzat so far",en:"Only Bayzat so far 😉",ar:"بس بيزات إلى الآن 😉"};
+const NONE_USED = {v:"No - first time",en:"No — this is our first",ar:"لا — هذي أول تجربة لنا"};
+
+/* ==================== steps ==================== */
+const STEPS = [
+  {id:"welcome", type:"welcome"},
+  {id:"company", type:"text"},
+  {id:"industry", type:"single", opts:"industry"},
+  {id:"role", type:"singletext", opts:"role"},
+  {id:"contact", type:"contact"},
+  {id:"currentSystem", type:"single", opts:"currentSystem", stacked:true},
+  {id:"modules", type:"multi", opts:"modules"},
+  {id:"biometric", type:"single", opts:"biometric", stacked:true,
+    cond:a=>(a.modules||[]).includes("Attendance & Shifts")},
+  {id:"timeline", type:"single", opts:"timeline", stacked:true},
+  {id:"assessing", type:"multi", opts:"platforms", extra:NONE_ASSESSING, exclusive:"Only Bayzat so far"},
+  {id:"usedBefore", type:"multi", opts:"platforms", extra:NONE_USED, exclusive:"No - first time"},
+  {id:"hiring", type:"single", opts:"hiring"},
+  {id:"performance", type:"single", opts:"performance", stacked:true},
+  {id:"ai", type:"single", opts:"ai", stacked:true},
+  {id:"thanks", type:"thanks"}
+];
+
+/* ==================== state ==================== */
+let lang = "en";
+let idx = 0;
+const answers = {};
+const history = [];
+
+function t(){return T[lang];}
+function activeSteps(){return STEPS.filter(s=>!s.cond || s.cond(answers));}
+function questionSteps(){return activeSteps().filter(s=>s.type!=="welcome"&&s.type!=="thanks");}
+
+function setLang(l){
+  lang=l;
+  document.documentElement.lang = l==="ar"?"ar":"en";
+  document.documentElement.dir  = l==="ar"?"rtl":"ltr";
+  document.getElementById("btn-en").classList.toggle("active",l==="en");
+  document.getElementById("btn-ar").classList.toggle("active",l==="ar");
+  render(false);
+}
+
+function progress(){
+  const steps=activeSteps();
+  const cur=steps[idx];
+  const qs=questionSteps();
+  const bar=document.getElementById("bar");
+  const sc=document.getElementById("stepCount");
+  if(cur.type==="welcome"){bar.style.width="0%";sc.textContent="";}
+  else if(cur.type==="thanks"){bar.style.width="100%";sc.textContent="";}
+  else{
+    const qi=qs.indexOf(cur)+1;
+    bar.style.width=(qi/(qs.length+1)*100)+"%";
+    sc.textContent=t().stepOf(qi,qs.length);
+  }
+  document.getElementById("backBtn").classList.toggle("show", idx>0 && cur.type!=="thanks");
+}
+
+function esc(s){return (s||"").replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/"/g,"&quot;");}
+function optLabel(o){return lang==="ar"?o.ar:o.en;}
+
+/* ==================== render ==================== */
+function render(animate=true){
+  const steps=activeSteps();
+  if(idx>=steps.length) idx=steps.length-1;
+  const s=steps[idx];
+  const card=document.getElementById("card");
+  const build=()=>{
+    card.innerHTML=html(s);
+    card.className="card slide";
+    progress();
+    const inp=card.querySelector("input");
+    if(inp && window.innerWidth>760) setTimeout(()=>inp.focus(),80);
+  };
+  if(animate && card.firstChild){
+    card.className="card slide out";
+    setTimeout(build,180);
+  } else build();
+}
+
+function html(s){
+  const q=t().q[s.id]||{};
+  if(s.type==="welcome"){
+    const w=t().welcome;
+    return `<div class="time-pill"><span class="dot"></span>${w.pill}</div>
+      <h1>${w.h}</h1><p class="sub">${w.sub}</p>
+      <div class="actions"><button class="btn btn-primary" onclick="goNext()">${t().start}</button></div>`;
+  }
+  if(s.type==="thanks"){
+    const th=t().thanks;
+    return `<div class="thanks-check"><svg viewBox="0 0 24 24" fill="none">
+        <path d="M4 12.5 L10 18.5 L20 6.5" stroke="#fff" stroke-width="3.2"/></svg></div>
+      <h1>${th.h}</h1><p class="sub">${th.sub}</p>`;
+  }
+  let body="";
+  if(s.type==="text"){
+    body=`<div class="field"><input type="text" id="f_${s.id}" placeholder="${esc(q.ph)}"
+      value="${esc(answers[s.id])}" onkeydown="onEnter(event)"><div class="err-msg" id="e_${s.id}"></div></div>
+      <div class="actions"><button class="btn btn-primary" onclick="goNext()">${t().next}</button>
+      <span class="hint">${t().enterHint}</span></div>`;
+  }
+  if(s.type==="singletext"){
+    body=chips(s)+`<div class="field" style="margin-top:18px">
+      <input type="text" id="f_designation" placeholder="${esc(q.ph)}" value="${esc(answers.designation)}"
+        onkeydown="onEnter(event)"></div>
+      <div class="actions"><button class="btn btn-primary" onclick="goNext()">${t().next}</button></div>`;
+  }
+  if(s.type==="contact"){
+    body=`<div class="field"><label>${q.email}</label>
+        <input type="email" id="f_email" placeholder="name@company.com" value="${esc(answers.email)}" onkeydown="onEnter(event)">
+        <div class="err-msg" id="e_email"></div></div>
+      <div class="field"><label>${q.phone}</label>
+        <input type="tel" id="f_phone" placeholder="${esc(q.phPh)}" value="${esc(answers.phone)}" onkeydown="onEnter(event)" dir="ltr" style="text-align:start">
+        <div class="err-msg" id="e_phone"></div></div>
+      <div class="actions"><button class="btn btn-primary" onclick="goNext()">${t().next}</button></div>`;
+  }
+  if(s.type==="single"){
+    body=chips(s);
+  }
+  if(s.type==="multi"){
+    body=chips(s)+`<div class="actions"><button class="btn btn-primary" onclick="goNext()">${t().next}</button>
+      <span class="hint"><b>${t().pickMany}</b></span></div>`;
+  }
+  const sub=q.sub?`<p class="sub">${q.sub}</p>`:`<div style="height:18px"></div>`;
+  return `<h2>${q.h}</h2>${sub}${body}<div class="err-msg" id="e_step"></div>`;
+}
+
+function chips(s){
+  let list=[...OPTS[s.opts]];
+  if(s.extra) list.push(s.extra);
+  const multi=s.type==="multi";
+  const sel=answers[s.id]|| (multi?[]:null);
+  const isSel=v=> multi ? sel.includes(v) : (s.type==="singletext"? answers.role===v : sel===v);
+  return `<div class="opts ${s.stacked?'stacked':''}">`+
+    list.map(o=>`<button class="opt ${isSel(o.v)?'selected':''}"
+      onclick="pick('${s.id}','${esc(o.v)}',${multi},'${s.exclusive||''}','${s.type}')">
+      <span class="tick">✓</span>${optLabel(o)}</button>`).join("")+`</div>`;
+}
+
+/* ==================== interactions ==================== */
+function pick(id,v,multi,exclusive,type){
+  const key = type==="singletext" ? "role" : id;
+  // preserve typed job title before re-render
+  const des=document.getElementById("f_designation");
+  if(des) answers.designation=des.value;
+  if(multi){
+    let arr=answers[key]||[];
+    if(v===exclusive){ arr = arr.includes(v)?[]:[v]; }
+    else{
+      arr=arr.filter(x=>x!==exclusive);
+      arr=arr.includes(v)?arr.filter(x=>x!==v):[...arr,v];
+    }
+    answers[key]=arr;
+    render(false);
+  }else{
+    answers[key]=v;
+    render(false);
+    if(type!=="singletext") setTimeout(goNext,260); // auto-advance
+  }
+}
+
+function onEnter(e){ if(e.key==="Enter"){e.preventDefault();goNext();} }
+
+function showErr(id,msg){
+  const el=document.getElementById(id);
+  if(el){el.textContent=msg;el.classList.add("show");}
+}
+
+function validate(s){
+  document.querySelectorAll(".err-msg").forEach(e=>e.classList.remove("show"));
+  document.querySelectorAll("input").forEach(i=>i.classList.remove("err"));
+  if(s.type==="text"){
+    const v=document.getElementById("f_"+s.id).value.trim();
+    if(!v){showErr("e_"+s.id,t().required);document.getElementById("f_"+s.id).classList.add("err");return false;}
+    answers[s.id]=v;
+  }
+  if(s.type==="singletext"){
+    const v=document.getElementById("f_designation").value.trim();
+    answers.designation=v;
+    if(!answers.role){showErr("e_step",t().required);return false;}
+  }
+  if(s.type==="contact"){
+    const em=document.getElementById("f_email"), ph=document.getElementById("f_phone");
+    const ev=em.value.trim(), pv=ph.value.trim();
+    let ok=true;
+    if(!/^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(ev)){showErr("e_email",t().badEmail);em.classList.add("err");ok=false;}
+    if(!/^[+\d][\d\s\-()]{7,}$/.test(pv)){showErr("e_phone",t().badPhone);ph.classList.add("err");ok=false;}
+    if(!ok) return false;
+    answers.email=ev;answers.phone=pv;
+  }
+  if(s.type==="single" && !answers[s.id]){showErr("e_step",t().required);return false;}
+  if(s.type==="multi" && !(answers[s.id]||[]).length){showErr("e_step",t().required);return false;}
+  return true;
+}
+
+function goNext(){
+  const steps=activeSteps();
+  const s=steps[idx];
+  if(s.type!=="welcome" && s.type!=="thanks" && !validate(s)) return;
+  if(s.id==="modules" && !(answers.modules||[]).includes("Attendance & Shifts")) delete answers.biometric;
+  history.push(s.id);
+  // recompute (conditional step may appear/disappear)
+  const ns=activeSteps();
+  const ci=ns.findIndex(x=>x.id===s.id);
+  idx=Math.min(ci+1,ns.length-1);
+  const nxt=ns[idx];
+  if(nxt.type==="thanks") submit();
+  render(true);
+}
+
+function goBack(){
+  if(!history.length){ if(idx>0){idx--;render(true);} return; }
+  const prevId=history.pop();
+  const ns=activeSteps();
+  idx=Math.max(ns.findIndex(x=>x.id===prevId),0);
+  render(true);
+}
+
+/* ==================== submit ==================== */
+function submit(){
+  answers.language = lang==="ar"?"Arabic":"English";
+  const payload={...answers};
+  payload.modules=(answers.modules||[]).join(", ");
+  console.log("Survey answers:",payload);
+  if(!GOOGLE_FORM.action){ return; }
+  const fd=new FormData();
+  const E=GOOGLE_FORM.entries;
+  const add=(k,val)=>{ if(E[k]&&val) fd.append(E[k],val); };
+  add("company",answers.company); add("industry",answers.industry);
+  add("role",answers.role); add("designation",answers.designation);
+  add("email",answers.email); add("phone",answers.phone);
+  add("currentSystem",answers.currentSystem);
+  (answers.modules||[]).forEach(m=>{ if(E.modules) fd.append(E.modules,m); });
+  add("biometric",answers.biometric); add("timeline",answers.timeline);
+  (answers.assessing||[]).forEach(m=>{ if(E.assessing) fd.append(E.assessing,m); });
+  (answers.usedBefore||[]).forEach(m=>{ if(E.usedBefore) fd.append(E.usedBefore,m); });
+  add("hiring",answers.hiring); add("performance",answers.performance);
+  add("ai",answers.ai); add("language",answers.language);
+  fetch(GOOGLE_FORM.action,{method:"POST",mode:"no-cors",body:fd})
+    .catch(err=>console.warn("Submit failed:",err));
+}
+
+/* detect browser language once */
+if((navigator.language||"").toLowerCase().startsWith("ar")) setLang("ar"); else render(false);
+</script>
+</body>
+</html>
